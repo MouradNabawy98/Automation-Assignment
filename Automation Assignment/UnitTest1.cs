@@ -34,8 +34,7 @@ namespace Automation_Assignment
 
         public void Test2()
         {
-            /**Open a 'https://www.facebook.com/r.php?entry_point=login'   and locate fields by id, name, className, tagName, xpath, and cssSelector. Fill in test data.
-             */
+       
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.facebook.com/r.php?entry_point=login");
             // Locate elements by various selectors
