@@ -6,43 +6,35 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace Automation_Assignment
 {
-    public class Tests
+    public class Tests12
     {
         WebDriver driver;
-        [Test]
-        public void Test1()
+        [SetUp]
+        public void Setup()
         {
-            /**
-             * "automate form: https://www.dummyticket.com/dummy-ticket-for-visa-application/ 
+            // Initialize the ChromeDriver
+            driver = new ChromeDriver();
+        
+        }
 
-upload file on both elements here: https://aa-practice-test-automation.vercel.app/Pages/uploadFile.html 
-Date Picker with date month and year selection: https://www.dummyticket.com/dummy-ticket-for-visa-application/ "
-"Find a button and print its tagName, attribute (like class or id), and location/size on screen also check if is enabled or not : https://the-internet.herokuapp.com/add_remove_elements/ 
-Check if checkbox is selected or not : https://aa-practice-test-automation.vercel.app/Pages/checkbox_Radio.html 
-"
-"Interact with a shadow DOM input field (use demo: 'https://books-pwakit.appspot.com/ ') and 
-https://the-internet.herokuapp.com/shadowdom  and 
-http://watir.com/examples/shadow_dom.html 
-"
-"Use  explicit WebDriverWait to handle a dynamic button that appears after 5 seconds.
-https://the-internet.herokuapp.com/dynamic_loading/2 "
-Click a link that opens in a new window/tab 'https://the-internet.herokuapp.com/windows' and switch to it, perform validation, then switch back.
-"Switch to a frame on 'https://the-internet.herokuapp.com/iframe', type text into the editor, and switch back to default content.
-Print the all text on the 4 frames here: https://the-internet.herokuapp.com/nested_frames "**/
+        [Test]
+        public void Test12()
+        {
 
              driver.Navigate().GoToUrl("https://www.dummyticket.com/dummy-ticket-for-visa-application/");
-            // Locate elements by various selectors 
-            driver = new ChromeDriver();
+            // Locate elements by various selectors
             driver.Navigate().GoToUrl("https://aa-practice-test-automation.vercel.app/Pages/uploadFile.html");
-            IWebElement uploadFileElement = driver.FindElement(By.Id("file-upload"));
+            IWebElement uploadFileElement = driver.FindElement(By.Id("regularFileInput"));
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
             // Upload a file
               driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            uploadFileElement.SendKeys(@"C:\path\to\your\file.txt"); // Replace with the actual file path
+            uploadFileElement.SendKeys("file.txt"); // Replace with the actual file path
             Console.WriteLine("File uploaded successfully.");
             driver.Navigate().GoToUrl("https://www.dummyticket.com/dummy-ticket-for-visa-application/");
             // Date Picker interaction
@@ -73,16 +65,12 @@ Print the all text on the 4 frames here: https://the-internet.herokuapp.com/nest
             // Interact with a shadow DOM input field
             driver.Navigate().GoToUrl("https://books-pwakit.appspot.com/");
             IWebElement shadowHost = driver.FindElement(By.CssSelector("books-app"));
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            IShadowRoot shadowRoot = (IShadowRoot)js.ExecuteScript("return arguments[0].shadowRoot", shadowHost);
-            IWebElement shadowInput = shadowRoot.FindElement(By.CssSelector("input[placeholder='Search']"));
-            shadowInput.SendKeys("Selenium");
+            shadowHost.GetShadowRoot().FindElement(By.CssSelector("input[placeholder='Search']")).SendKeys("Selenium");
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
-            // Handle dynamic button with explicit WebDriverWait
+           // Handle dynamic button with explicit WebDriverWait
              driver.Navigate().GoToUrl("https://the-internet.herokuapp.com/dynamic_loading/2");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement dynamicButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("start")));
+            IWebElement dynamicButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("start")));
             dynamicButton.Click();
             IWebElement newWindowLink = driver.FindElement(By.LinkText("Click Here"));
             newWindowLink.Click();
@@ -127,10 +115,17 @@ Print the all text on the 4 frames here: https://the-internet.herokuapp.com/nest
             driver.SwitchTo().Frame("frame-bottom");
             IWebElement bottomFrameText = driver.FindElement(By.TagName("body"));
             Console.WriteLine("Text in Bottom Frame: " + bottomFrameText.Text);
-            // Close the driver
-            driver.Quit();
+       
 
-
+        }
+        [TearDown]
+        public void TearDown()
+        {
+            // Close the browser
+            if (driver != null)
+            {
+                driver.Quit();
+            }
         }
     }
     
