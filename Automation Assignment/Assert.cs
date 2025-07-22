@@ -39,8 +39,6 @@ namespace Automation_Assignment
             driver.FindElement(By.Id("username")).SendKeys("student");
             driver.FindElement(By.Id("password")).SendKeys("Password124");
             driver.FindElement(By.Id("submit")).Click();
-            string tt = driver.FindElement(By.Id("error")).Text;
-            Console.WriteLine(tt);
             Assert.True(driver.FindElement(By.Id("error")).Text.Contains("Your password is invalid!"));
 
         }
